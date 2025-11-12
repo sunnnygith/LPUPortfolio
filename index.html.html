@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark"> <!-- Start in dark mode -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny Kumar - Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config: Enable 'class' dark mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <!-- Boxicons CDN for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Custom Styles -->
+    <style>
+        /* Use Inter font, Tailwind's default sans-serif */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* background-color and color removed, handled by Tailwind classes on <body> */
+        }
+
+        /* Custom accent color */
+        :root { /* Light Mode Defaults */
+            --accent-color: #F97316; /* Bright Orange */
+            --accent-glow-opacity: 0.3;
+        }
+
+        html.dark { /* Dark Mode Overrides */
+            --accent-glow-opacity: 0.7;
+        }
+
+        .text-accent {
+            color: var(--accent-color);
+        }
+        .bg-accent {
+            background-color: var(--accent-color);
+        }
+        .border-accent {
+            border-color: var(--accent-color);
+        }
+
+        /* Typing cursor effect */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.5rem; /* Adjust to match text size */
+            background-color: var(--accent-color);
+            animation: blink 0.7s infinite;
+        }
+
+        /* Active Nav Link */
+        .nav-link.active {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        /* Sticky header background */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8); /* White bg for light mode */
+            backdrop-filter: blur(10px);
+        }
+        html.dark .header-scrolled {
+            background-color: rgba(17, 24, 39, 0.8); /* bg-gray-900 with opacity for dark */
+        }
+
+        /* Section min-height */
+        section {
+            min-height: 80vh;
+            padding-top: 8rem; /* Offset for sticky header */
+            padding-bottom: 4rem;
+        }
+
+        /* Responsive container */
+        .container {
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        /* Glow Effect */
+        .glow-box {
+            position: relative;
+            overflow: hidden;
+        }
+        .glow-box::before {
+            content: '';
+            position: absolute;
+            top: -100px; /* Position top-left */
+            left: -100px;
+            width: 300px; /* Size of glow */
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 60%);
+            filter: blur(60px);
+            opacity: var(--accent-glow-opacity);
+            z-index: 0;
+            transition: opacity 0.3s;
+            pointer-events: none; /* Don't block mouse */
+        }
+        .glow-box > * {
+            position: relative;
+            z-index: 1; /* Content above glow */
+        }
+    </style>
+</head>
+<body class="antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Header / Navbar -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container h-24 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#home" class="text-2xl font-bold transition-colors hover:text-accent">
+                Sunny
+            </a>
+
+            <!-- Right side container for Nav and Theme Toggle -->
+            <div class="flex items-center">
+                <!-- Nav Links -->
+                <ul id="nav-menu" class="hidden fixed top-24 left-0 right-0 bottom-0 z-40 flex flex-col items-center pt-8 space-y-6 bg-white dark:bg-gray-900 md:relative md:top-auto md:left-auto md:right-auto md:bottom-auto md:z-auto md:flex md:flex-row md:items-center md:space-y-0 md:pt-0 md:bg-transparent md:space-x-8">
+                    <li><a href="#home" class="nav-link text-lg transition-colors hover:text-accent">Home</a></li>
+                    <li><a href="#about" class="nav-link text-lg transition-colors hover:text-accent">About</a></li>
+                    <li><a href="#skills" class="nav-link text-lg transition-colors hover:text-accent">Skills</a></li>
+                    <li><a href="#projects" class="nav-link text-lg transition-colors hover:text-accent">Projects</a></li>
+                    <li><a href="#contact" class="nav-link text-lg transition-colors hover:text-accent">Contact</a></li>
+                </ul>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="text-3xl ml-4 text-gray-600 dark:text-gray-300 transition-colors hover:text-accent">
+                    <i id="theme-icon" class='bx bxs-moon'></i> <!-- Default to moon (dark mode) -->
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button (Optional, not functional in this simple version) -->
+            <button id="mobile-menu-button" class="md:hidden text-3xl z-50">
+                <i class='bx bx-menu'></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Home / Hero Section -->
+        <section id="home" style="padding-top:100px;" class="container flex flex-col md:flex-row items-center justify-center min-h-screen pt-24 md:pt-0">
+            <!-- Left Content -->
+            <div class="md:w-1/2 text-center md:text-left">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight">
+                    Hi, I am <span class="text-accent">Sunny Kumar</span>
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-medium mt-4">
+                    I am a <span id="typing-text" class="text-accent"></span><span class="typing-cursor"></span>
+                </h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-4 text-lg max-w-lg mx-auto md:mx-0 transition-colors duration-300">
+                    An MCA student at Lovely Professional University, passionate about software development and learning new technologies.
+                </p>
+
+                <!-- Social Icons -->
+                <div class="flex justify-center md:justify-start space-x-6 mt-8">
+                    <a href="https://www.linkedin.com/in/sunnykumar-sde/" target="_blank" class="text-3xl text-gray-500 dark:text-gray-400 transition-colors hover:text-accent" aria-label="LinkedIn">
+                        <i class='bx bxl-linkedin-square'></i>
+                    </a>
+                    <a href="http://GitHub.com/sunnnygith" target="_blank" class="text-3xl text-gray-500 dark:text-gray-400 transition-colors hover:text-accent" aria-label="GitHub">
+                        <i class='bx bxl-github'></i>
+                    </a>
+                    <a href="https://x.com/sunnyk0007" target="_blank" class="text-3xl text-gray-500 dark:text-gray-400 transition-colors hover:text-accent" aria-label="Twitter">
+                        <i class='bx bxl-twitter'></i>
+                    </a>
+                </div>
+
+                <!-- CTA Button -->
+                <a href="#contact" class="inline-block bg-accent text-white font-semibold px-8 py-3 rounded-lg mt-8 transition-transform hover:scale-105">
+                    Contact Me <i class='bx bx-send align-middle ml-1'></i>
+                </a>
+            </div>
+
+            <!-- Right Image -->
+            <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center">
+                <!-- Using a placeholder image -->
+                <img src="https://awake-cyan-dmch5yugwy.edgeone.app/WhatsApp%20Image%202025-11-13%20at%2002.52.05_57222b76.jpg" 
+                     alt="Sunny Kumar"
+                     class="w-64 h-64 md:w-96 md:h-96 rounded-full object-cover border-4 border-accent shadow-lg">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="container">
+            <h2 class="text-4xl font-bold text-center mb-4">About Me</h2>
+            <p class="text-xl text-center text-gray-500 dark:text-gray-400 mb-12 transition-colors duration-300">My Introduction</p>
+
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- About Image -->
+                <div class="md:w-1/3 flex justify-center">
+                    <img src="https://similar-scarlet-kolkoltsis.edgeone.app/WhatsApp%20Image%202025-11-13%20at%2002.52.04_c8ffae53.jpg" 
+                         alt="About Sunny"
+                         class="w-full max-w-xs rounded-lg object-cover shadow-lg">
+                </div>
+                <!-- About Content -->
+                <div class="md:w-2/3 text-center md:text-left">
+                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed transition-colors duration-300">
+                        Hello! I am Sunny Kumar, currently pursuing a Master of Computer Applications (MCA) from Lovely Professional University. I have a strong foundation in core computer science concepts and a keen interest in full-stack web development.
+                    </p>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4 transition-colors duration-300">
+                        I am passionate about building applications that are not only functional but also provide a great user experience. I'm always eager to learn new technologies, contribute to open-source projects, and collaborate with others.
+                    </p>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4 transition-colors duration-300">
+                        When I am not coding, I enjoy exploring new tech blogs, playing badminton, and listening to music.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="container">
+            <h2 class="text-4xl font-bold text-center mb-4">My Skills</h2>
+            <p class="text-xl text-center text-gray-500 dark:text-gray-400 mb-12 transition-colors duration-300">My Technical Abilities</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skill Category Card -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg glow-box transition-colors duration-300">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-accent">Languages</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">Java</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">Python</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">C++</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Skill Category Card -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg glow-box transition-colors duration-300">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-accent">Web Development</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">HTML</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Advanced</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">CSS</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">JavaScript</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">React</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Beginner</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skill Category Card -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg glow-box transition-colors duration-300">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-accent">Tools & Databases</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">SQL (MySQL)</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">Git</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">GitHub</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Intermediate</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-lg">MongoDB</span>
+                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-300">Beginner</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="container">
+            <h2 class="text-4xl font-bold text-center mb-4">My Projects</h2>
+            <p class="text-xl text-center text-gray-500 dark:text-gray-400 mb-12 transition-colors duration-300">Recent Work</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1: To-Do List -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105 glow-box transition-colors duration-300">
+                    <img src="https://cdn.thewirecutter.com/wp-content/media/2023/12/todoapps-2048px-07011.jpg?auto=webp&quality=75&width=1024" alt="To-Do List App" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2">To-Do List App (Ongoing)</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4 transition-colors duration-300">
+                            A simple task manager built with HTML, CSS, and JavaScript. Uses local storage to save tasks.
+                        </p>
+                        <div class="flex justify-between">
+                            <a href="https://github.com/sunny-kumar/todo-app" target="_blank" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Code <i class='bx bxl-github align-middle'></i>
+                            </a>
+                            <a href="https://sunny-kumar.github.io/todo-app/" target="_blank" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Demo <i class='bx bx-right-arrow-alt align-middle'></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2: Weather App -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105 glow-box transition-colors duration-300">
+                    <img src="https://static.vecteezy.com/system/resources/previews/013/826/094/non_2x/set-vertical-background-of-weather-forecast-app-widgets-sunny-day-thunderstorm-rain-night-and-winter-snow-illustration-free-vector.jpg" alt="Weather App" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2">Simple Weather App (Ongoing)</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4 transition-colors duration-300">
+                            Fetches data from a public API to display the current weather for a searched city.
+                        </p>
+                        <div class="flex justify-between">
+                            <a href="https://github.com/sunny-kumar/weather-app" target="_blank" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Code <i class='bx bxl-github align-middle'></i>
+                            </a>
+                            <a href="https://sunny-kumar.github.io/weather-app/" target="_blank" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Demo <i class='bx bx-right-arrow-alt align-middle'></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3: Portfolio Website -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105 glow-box transition-colors duration-300">
+                    <img src="https://img.freepik.com/premium-vector/black-white-monoline-typedriven-portfolio-cover-page-template-design_525160-1341.jpg" alt="Portfolio Website" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2">Personal Portfolio</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4 transition-colors duration-300">
+                            This personal portfolio. Built with HTML, Tailwind CSS, and vanilla JavaScript.
+                        </g>
+                        <div class="flex justify-between">
+                            <a href="https://github.com/sunny-kumar/portfolio" target="_blank" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Code <i class='bx bxl-github align-middle'></i>
+                            </a>
+                            <a href="#home" class="text-accent font-medium transition-colors hover:text-orange-400">
+                                View Demo <i class='bx bx-right-arrow-alt align-middle'></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="container">
+            <h2 class="text-4xl font-bold text-center mb-4">Contact Me</h2>
+            <p class="text-xl text-center text-gray-500 dark:text-gray-400 mb-12 transition-colors duration-300">Get in Touch</p>
+
+            <div class="flex flex-col md:flex-row gap-12">
+                <!-- Left: Contact Info -->
+                <div class="md:w-1/3 space-y-8">
+                    <div class="flex items-center bg-white dark:bg-gray-800 p-4 rounded-lg glow-box transition-colors duration-300">
+                        <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg mr-4 transition-colors duration-300">
+                            <i class='bx bx-mail-send text-3xl text-accent'></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Email</h3>
+                            <a href="mailto:sunny.kumar@example.com" class="text-gray-700 dark:text-gray-300 transition-colors hover:text-accent duration-300">ksunny.contact@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center bg-white dark:bg-gray-800 p-4 rounded-lg glow-box transition-colors duration-300">
+                        <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg mr-4 transition-colors duration-300">
+                            <i class='bx bxl-linkedin text-3xl text-accent'></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">LinkedIn</h3>
+                            <a href="https://www.linkedin.com/in/sunnykumar-sde/" class="text-gray-700 dark:text-gray-300 transition-colors hover:text-accent duration-300">linkedin.com/in/sunnykumar-sde/</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center bg-white dark:bg-gray-800 p-4 rounded-lg glow-box transition-colors duration-300">
+                        <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg mr-4 transition-colors duration-300">
+                            <i class='bx bx-map text-3xl text-accent'></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Location</h3>
+                            <p class="text-gray-700 dark:text-gray-300 transition-colors duration-300">LPU, Phagwara, Punjab</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Contact Form -->
+                <div class="md:w-2/3">
+                    <form action="#" class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg space-y-6 glow-box transition-colors duration-300">
+                        <div>
+                            <label for="name" class="block text-sm font-medium mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" class="w-full bg-gray-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 rounded-lg p-3 focus:outline-none focus:border-accent placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-2">Your Email</label>
+                            <input type="email" id="email" name="email" class="w-full bg-gray-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 rounded-lg p-3 focus:outline-none focus:border-accent placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300" placeholder="john.doe@example.com">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full bg-gray-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 rounded-lg p-3 focus:outline-none focus:border-accent placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300" placeholder="Your message here..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-accent text-white font-semibold px-8 py-3 rounded-lg transition-transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-16 transition-colors duration-300">
+        <div class="container py-8 text-center text-gray-500 dark:text-gray-400 transition-colors duration-300">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://www.linkedin.com/in/sunnykumar-sde/" target="_blank" class="text-2xl transition-colors hover:text-accent" aria-label="LinkedIn">
+                    <i class='bx bxl-linkedin-square'></i>
+                </a>
+                <a href="http://GitHub.com/sunnnygith" target="_blank" class="text-2xl transition-colors hover:text-accent" aria-label="GitHub">
+                    <i class='bx bxl-github'></i>
+                </a>
+                <a href="https://x.com/sunnyk0007" target="_blank" class="text-2xl transition-colors hover:text-accent" aria-label="Twitter">
+                    <i class='bx bxl-twitter'></i>
+                </a>
+            </div>
+            <p>&copy; 2025 Sunny Kumar. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Typing Effect ---
+            const typingText = document.getElementById('typing-text');
+            const words = ['Developer', 'Programmer', 'Learner'];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentWord = words[wordIndex];
+                let displayText = '';
+
+                if (isDeleting) {
+                    displayText = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    displayText = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                typingText.textContent = displayText;
+
+                let typeSpeed = 150;
+                if (isDeleting) {
+                    typeSpeed /= 2;
+                }
+
+                if (!isDeleting && charIndex === currentWord.length) {
+                    // Pause at end of word
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    typeSpeed = 500;
+                }
+
+                setTimeout(type, typeSpeed);
+            }
+            
+            type();
+
+            // --- Theme Toggle ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const htmlEl = document.documentElement;
+
+            // Check initial theme on load
+            // 1. Check localStorage
+            // 2. If 'light', set light.
+            // 3. If 'dark', set dark (already default, but good to be explicit).
+            // 4. If unset, check media query
+            // 5. If media is 'light', set light.
+            // 6. Otherwise, let the default 'dark' stand.
+            const initialTheme = (() => {
+                if (typeof localStorage !== 'undefined' && localStorage.theme) {
+                    return localStorage.theme;
+                }
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    return 'light';
+                }
+                return 'dark'; // Default
+            })();
+
+            if (initialTheme === 'light') {
+                htmlEl.classList.remove('dark');
+                themeIcon.classList.remove('bxs-moon');
+                themeIcon.classList.add('bxs-sun');
+            } else {
+                htmlEl.classList.add('dark');
+                themeIcon.classList.remove('bxs-sun');
+                themeIcon.classList.add('bxs-moon');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const isDark = htmlEl.classList.toggle('dark');
+                if (isDark) {
+                    themeIcon.classList.remove('bxs-sun');
+                    themeIcon.classList.add('bxs-moon');
+                    localStorage.theme = 'dark';
+                } else {
+                    themeIcon.classList.remove('bxs-moon');
+                    themeIcon.classList.add('bxs-sun');
+                    localStorage.theme = 'light';
+                }
+            });
+
+            // --- Mobile Menu Toggle ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const navMenu = document.getElementById('nav-menu');
+            const mobileMenuButtonIcon = mobileMenuButton.querySelector('i');
+
+            mobileMenuButton.addEventListener('click', function() {
+                navMenu.classList.toggle('hidden');
+                
+                // Toggle icon
+                if (navMenu.classList.contains('hidden')) {
+                    mobileMenuButtonIcon.classList.remove('bx-x');
+                    mobileMenuButtonIcon.classList.add('bx-menu');
+                } else {
+                    mobileMenuButtonIcon.classList.remove('bx-menu');
+                    mobileMenuButtonIcon.classList.add('bx-x');
+                }
+            });
+
+            
+            // --- Sticky Header ---
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+            });
+
+
+            // --- Active Nav Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', function() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Adjust top offset to trigger active state earlier
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) { 
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Smooth Scroll for Nav Links ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Check if it's a valid hash link
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        e.preventDefault();
+
+                        // Store hash
+                        var hash = this.hash;
+
+                        // Get target element
+                        const targetElement = document.querySelector(hash);
+                        if (targetElement) {
+                            const headerOffset = document.getElementById('header').offsetHeight;
+                            const elementPosition = targetElement.offsetTop;
+                            const offsetPosition = elementPosition - headerOffset;
+
+                            // Smooth scroll to element
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+
+                            // Close mobile menu if open
+                            if (!navMenu.classList.contains('hidden')) {
+                                navMenu.classList.add('hidden');
+                                // Reset hamburger icon
+                                mobileMenuButtonIcon.classList.remove('bx-x');
+                                mobileMenuButtonIcon.classList.add('bx-menu');
+                            }
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
